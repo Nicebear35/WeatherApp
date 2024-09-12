@@ -13,7 +13,6 @@ public partial class WeatherPage : ContentPage
     public WeatherPage()
     {
         InitializeComponent();
-        WeatherList = new List<Models.List>();
     }
 
     protected async override void OnAppearing()
@@ -46,13 +45,13 @@ public partial class WeatherPage : ContentPage
     public async Task GetWeatherDataByCityName(string cityName)
     {
         var result = await ApiService.GetWeatherByCity(cityName);
-        
+
         UpdateUI(result);
     }
 
     private async void ImageButton_Clicked(object sender, EventArgs e)
     {
-        var response = await DisplayPromptAsync(title: "", message: "", placeholder: "Search weather by city", accept: "Search", cancel: "Cansel");
+        var response = await DisplayPromptAsync(title: "", message: "", placeholder: "Search weather by city", accept: "Search", cancel: "Cancel");
 
         if (response != null)
         {
@@ -62,6 +61,8 @@ public partial class WeatherPage : ContentPage
 
     public void UpdateUI(Root result)
     {
+        WeatherList = new List<Models.List>();
+
         foreach (var item in result.List)
         {
             WeatherList.Add(item);
@@ -73,7 +74,14 @@ public partial class WeatherPage : ContentPage
         LblWeatherDescription.Text = result.List[0].Weather[0].Description;
         LblTemperature.Text = result.List[0].Main.Temperature + "°C";
         LblHumidity.Text = result.List[0].Main.Humidity + "%";
-        LblWind.Text = Math.Round(result.List[0].Wind.Speed / 3.6, 2) + " m/s"; //делим на 3,6 для получения метров в секунду (Math.Round оставляет 2 знака после ","
+        LblWind.Text = Math.Round(result.List[0].Wind.Speed) + " m/s";
         ImgWeatherIcon.Source = result.List[0].Weather[0].CustomIcon;
+    }
+
+    private async void GetWeatherInRandomCityButton_Clicked(object sender, EventArgs e)
+    {
+        var result = await ApiService.GetWeatherByCity(RandomCity.PickRandomCity());
+
+        UpdateUI(result);
     }
 }

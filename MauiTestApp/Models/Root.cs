@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Maui.Graphics.Text;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace MauiTestApp.Models
         public Clouds Clouds { get; set; }
         public Wind Wind { get; set; }
         public int Visibility { get; set; }
-        public float Pop { get; set; } //changed to float bacause of standart type was int
+        public float Pop { get; set; } //changed to float bacause of standart type was int, but data waits float numbers
         public Sys Sys { get; set; }
         public string DtTxt { get; set; }
         public Rain Rain { get; set; }
